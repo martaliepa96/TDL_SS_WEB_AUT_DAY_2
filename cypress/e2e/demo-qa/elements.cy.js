@@ -1,4 +1,7 @@
 import TextBoxPage from "../../pageObjects/textBoxPage";
+import CheckBoxPage from "../../pageObjects/checkBox.page"
+import RadioButton from "../../pageObjects/RadioButton.page";
+import WebTables from "../../pageObjects/WebTables.page";
 
 context("Elements Page", () => {
   context("Text box scenarios", () => {
@@ -11,7 +14,7 @@ context("Elements Page", () => {
     // Create texbox scenario
     // fill in textboxes with necessary information
     // validate the paragraphs
-    it.only("Filling in Text Boxes", () => {
+    it("Filling in Text Boxes", () => {
             // add the necessary steps
       TextBoxPage.fullName.type('Donald')
       TextBoxPage.email.type('test@test.com')
@@ -26,19 +29,58 @@ context("Elements Page", () => {
   });
 
   context("Check box scenarios", () => {
+    beforeEach(() => {
+      CheckBoxPage.visit();
+    });
+
     // Create CheckBoxPage page object
     // Create checkbox scenario 1:
-    // Click the "+"/expand button
+    it("Filling in Text Boxes", () => {
+      // Click the "+"/expand button
+      CheckBoxPage.expand.click();
     // Click Notes, React, Angular, General, Excel File.doc
-    // Validate the clicked checkboxes
+    CheckBoxPage.notes.click();
+    CheckBoxPage.react.click();
+    CheckBoxPage.angular.click();
+    CheckBoxPage.general.click();
+    CheckBoxPage.excelFile.click();
 
+    // Validate the clicked checkboxes
+    CheckBoxPage.results.should('contain', 'notes')
+    CheckBoxPage.results.should('contain', 'react')
+    CheckBoxPage.results.should('contain', 'angular')
+    CheckBoxPage.results.should('contain', 'general')
+    CheckBoxPage.results.should('contain', 'excelFile')
+    });
     // Create checkbox scenario 2:
-    // Click expand button
-    // Click Office
-    // Validate the checked checkboxes
+    it("Check validation", () => {
+      // Click expand button
+      CheckBoxPage.expand.click();
+      // Click Office
+      CheckBoxPage.office.click();
+          // Validate the checked checkboxes
+    CheckBoxPage.clicked.click();
+    CheckBoxPage.results.should('contain', 'office')
+    CheckBoxPage.results.should('contain', 'public')
+    CheckBoxPage.results.should('contain', 'private')
+    CheckBoxPage.results.should('contain', 'classified')
+    CheckBoxPage.results.should('contain', 'general')
+    })
   });
 
   context("Radio button scenarios", () => {
+    beforeEach(() => {
+      RadioButton.visit()
+
+    })
+    it("Valdate messages", () => {
+      RadioButton.yesButton.click({force: true});
+      RadioButton.yesClicked.should('contain', 'Yes')
+      RadioButton.impressiveButton.click({force: true});
+      RadioButton.yesClicked.should('contain', 'Impressive')
+      RadioButton.noButton.should('be.disabled');
+      
+    })
     // Create RadioButtons page object
     // Scenario 1:
     // Click yesButton
@@ -49,6 +91,27 @@ context("Elements Page", () => {
   });
 
   context("Web tables scenarios", () => {
+    beforeEach(() => {
+      WebTables.visit();
+    });
+
+    it("Scenario Num 1", () => {
+      WebTables.add.click();
+      WebTables.firstName.type('Marta')
+      WebTables.lastName.type('Liepa')
+      WebTables.email.type('test@test.com')
+      WebTables.age.type('26')
+      WebTables.salary.type('1000')
+      WebTables.department.type('finance')
+      WebTables.submit.click();
+      WebTables.search.type('Marta')
+      WebTables.table.should('contain', 'Marta', 'Liepa', 'test@test.com', '26', '1000', 'finance')
+    });
+    
+    it("Scenario Num 2", () => {
+      WebTables.deleteButton.click();
+      WebTables.noData.should('contain', 'No rows found')
+    })
     // Create WebTables page object
     // Create scenario 1:
     // Click add record button
@@ -63,6 +126,8 @@ context("Elements Page", () => {
   });
 
   context("Buttons scenarios", () => {
+
+    
     // Create buttons clicking scenario
     // Create Buttons page
     // Check documentation https://docs.cypress.io/api/commands/and for how to perform different types of clicking
