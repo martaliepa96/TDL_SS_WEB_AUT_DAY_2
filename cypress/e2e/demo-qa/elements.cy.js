@@ -6,11 +6,22 @@ context("Elements Page", () => {
       TextBoxPage.visit();
     });
 
+
+
     // Create texbox scenario
     // fill in textboxes with necessary information
     // validate the paragraphs
-    it("Filling in Text Boxes", () => {
-      // add the necessary steps
+    it.only("Filling in Text Boxes", () => {
+            // add the necessary steps
+      TextBoxPage.fullName.type('Donald')
+      TextBoxPage.email.type('test@test.com')
+      TextBoxPage.currentAddress.type(`Melanie`)
+      TextBoxPage.permamentAddress.type('Harry')
+      TextBoxPage.Submit.click();
+      TextBoxPage.pfullName.should("contain", 'Donald')
+      TextBoxPage.pemail.should("contain", 'test@test.com')
+      TextBoxPage.pcurrentAddress.should("contain", 'Melanie')
+      TextBoxPage.ppermamentAddress.should("contain", 'Harry' )
     });
   });
 
